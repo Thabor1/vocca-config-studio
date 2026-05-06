@@ -29,14 +29,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Vocca Configurator" },
+      { name: "description", content: "Nous avons prérempli les motifs de votre établissement de santé à partir des informations disponibles. Il ne vous reste qu’à relire et confirmer." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Vocca Configurator" },
+      { property: "og:description", content: "Nous avons prérempli les motifs de votre établissement de santé à partir des informations disponibles. Il ne vous reste qu’à relire et confirmer." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Vocca Configurator" },
+      { name: "twitter:description", content: "Nous avons prérempli les motifs de votre établissement de santé à partir des informations disponibles. Il ne vous reste qu’à relire et confirmer." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/qM15CrcHbggJWS1oHkijEAd37PN2/social-images/social-1778049066170-Gemini_Generated_Image_2b5kyo2b5kyo2b5k.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/qM15CrcHbggJWS1oHkijEAd37PN2/social-images/social-1778049066170-Gemini_Generated_Image_2b5kyo2b5kyo2b5k.webp" },
     ],
     links: [
       {
