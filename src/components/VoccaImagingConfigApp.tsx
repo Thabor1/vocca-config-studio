@@ -785,19 +785,21 @@ export default function VoccaEnosisConfigDemo() {
    Header / Stepper
    ============================================================ */
 
-function VoccaLogo() {
+function VoccaLogo({ size = "sm" }: { size?: "sm" | "lg" }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="relative grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/25">
-        <span className="text-base font-bold tracking-tight">V</span>
-        <div className="absolute inset-0 rounded-xl bg-white/10 blur-sm" />
-      </div>
-      <div className="leading-tight">
-        <div className="text-sm font-semibold tracking-tight">Vocca</div>
-        <div className="text-[11px] text-muted-foreground">
-          Configuration assistant vocal
+      <img
+        src="/lovable-uploads/vocca-logo.png"
+        alt="Vocca"
+        className={cn(size === "lg" ? "h-14 w-auto" : "h-9 w-auto")}
+      />
+      {size === "sm" && (
+        <div className="hidden leading-tight sm:block">
+          <div className="text-[11px] text-muted-foreground">
+            Configuration assistant vocal
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -915,8 +917,11 @@ function Onboarding({ onNext }: { onNext: () => void }) {
           <Badge className="mb-4 border-white/20 bg-white/15 text-white hover:bg-white/15">
             <Sparkles className="mr-1 h-3 w-3" /> Configuration préremplie par Vocca
           </Badge>
+          <div className="mb-5 inline-flex items-center rounded-2xl bg-white/95 px-4 py-2 shadow-md">
+            <img src="/lovable-uploads/vocca-logo.png" alt="Vocca" className="h-10 w-auto" />
+          </div>
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Votre configuration Vocca est prête
+            Votre configuration Vocca est (presque) prête
           </h1>
           <p className="mt-4 text-base text-white/85 sm:text-lg">
             Nous avons prérempli les motifs du Centre de l’Arthrose à partir
@@ -1125,7 +1130,7 @@ function MotifsScreen({
         <Kpi label="Total motifs" value={counts.total} tone="indigo" />
         <Kpi label="Ouverts" value={counts.open} tone="emerald" />
         <Kpi label="À transférer" value={counts.transfer} tone="orange" />
-        <Kpi label="Sans nom patient" value={counts.noLabel} tone="amber" />
+        <Kpi label="Sans nom oral patient" value={counts.noLabel} tone="amber" />
         <Kpi label="Prix renseignés" value={counts.priced} tone="violet" />
       </div>
 
@@ -1136,7 +1141,7 @@ function MotifsScreen({
               {counts.withLabel} / {counts.total}
             </span>{" "}
             <span className="text-muted-foreground">
-              motifs disposent déjà d’un nom patient
+              motifs disposent déjà d’un nom oral patient
             </span>
           </div>
           <div className="text-xs text-muted-foreground">
@@ -1192,7 +1197,7 @@ function MotifsScreen({
           <FilterChip
             active={filter === "noLabel"}
             onClick={() => setFilter("noLabel")}
-            label="Sans nom patient"
+            label="Sans nom oral patient"
             count={counts.noLabel}
           />
           <FilterChip
@@ -1211,12 +1216,41 @@ function MotifsScreen({
               <tr>
                 <Th>Type</Th>
                 <Th>Libellé importé</Th>
-                <Th>Nom côté patient</Th>
-                <Th>Statut</Th>
+                <Th>
+                  <span
+                    title="C’est le libellé simple que Vocca utilisera à l’oral pour confirmer le motif avec le patient. Ex. : « Échographie abdominale »."
+                    className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2"
+                  >
+                    Nom entendu par le patient
+                    <HelpCircle className="h-3 w-3 opacity-60" />
+                  </span>
+                </Th>
+                <Th>
+                  <span
+                    title={
+                      "Ouvert : Vocca est autonome pour prendre les rendez-vous sur ce motif.\n" +
+                      "À transférer : Vocca tente d’abord de transférer l’appel au secrétariat humain. Si indisponible, elle crée une tâche.\n" +
+                      "Création de tâche : Vocca crée une tâche pour le secrétariat dès que le motif est évoqué.\n" +
+                      "Fermé : Vocca ne prend pas de rendez-vous sur ce motif."
+                    }
+                    className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2"
+                  >
+                    Statut
+                    <HelpCircle className="h-3 w-3 opacity-60" />
+                  </span>
+                </Th>
                 <Th className="w-20">Âge min</Th>
                 <Th className="w-20">Âge max</Th>
                 <Th className="w-24">Prix</Th>
-                <Th className="w-20 text-center">Triage</Th>
+                <Th className="w-20 text-center">
+                  <span
+                    title="Les questions de triage ne se configurent pas ici. Activez simplement le triage pour ce motif ; les questions précises seront choisies à l’étape suivante."
+                    className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2"
+                  >
+                    Triage
+                    <HelpCircle className="h-3 w-3 opacity-60" />
+                  </span>
+                </Th>
                 <Th>Instructions</Th>
               </tr>
             </thead>
@@ -1245,7 +1279,7 @@ function MotifsScreen({
                       {missing && (
                         <div className="mb-1 flex items-center gap-1 text-[11px] font-medium text-amber-700 dark:text-amber-400">
                           <AlertTriangle className="h-3 w-3" />
-                          Nom patient manquant
+                          Nom oral patient manquant
                         </div>
                       )}
                       <Input
@@ -1253,7 +1287,8 @@ function MotifsScreen({
                         onChange={(e) =>
                           updateMotif(m.id, { patientLabel: e.target.value })
                         }
-                        placeholder="Nom à dire au patient"
+                        placeholder="Ex. : Échographie abdominale"
+                        title="C’est le libellé simple que Vocca utilisera à l’oral pour confirmer le motif avec le patient."
                         className={cn(
                           "h-8 min-w-[180px]",
                           missing && "border-amber-300 bg-white",
@@ -1504,10 +1539,14 @@ function MotifDrawer({
                   {motif.importedLabel}
                 </div>
               </Field>
-              <Field label="Nom côté patient">
+              <Field
+                label="Nom du motif entendu par le patient"
+                help="C’est le libellé simple que Vocca utilisera à l’oral pour confirmer le motif avec le patient."
+              >
                 <Input
                   value={motif.patientLabel}
                   onChange={(e) => onChange({ patientLabel: e.target.value })}
+                  placeholder="Ex. : Échographie abdominale"
                 />
               </Field>
               <Field label="Statut">
