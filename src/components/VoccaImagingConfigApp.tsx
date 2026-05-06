@@ -1327,27 +1327,29 @@ function MotifsScreen({
                       />
                     </Td>
                     <Td>
-                      <Select
-                        value={m.status}
-                        onValueChange={(v) =>
-                          updateMotif(m.id, { status: v as MotifStatus })
-                        }
-                      >
-                        <SelectTrigger
-                          className={cn(
-                            "h-8 w-[140px] border",
-                            STATUS_META[m.status].className,
-                          )}
+                      <HoverTooltip content={STATUS_TOOLTIP} align="left">
+                        <Select
+                          value={m.status}
+                          onValueChange={(v) =>
+                            updateMotif(m.id, { status: v as MotifStatus })
+                          }
                         >
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="open">Ouvert</SelectItem>
-                          <SelectItem value="closed">Fermé</SelectItem>
-                          <SelectItem value="transfer">À transférer</SelectItem>
-                          <SelectItem value="task">Création de tâche</SelectItem>
-                        </SelectContent>
-                      </Select>
+                          <SelectTrigger
+                            className={cn(
+                              "h-8 w-[140px] border",
+                              STATUS_META[m.status].className,
+                            )}
+                          >
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="open">Ouvert</SelectItem>
+                            <SelectItem value="closed">Fermé</SelectItem>
+                            <SelectItem value="transfer">À transférer</SelectItem>
+                            <SelectItem value="task">Création de tâche</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </HoverTooltip>
                     </Td>
                     <Td>
                       <Input
