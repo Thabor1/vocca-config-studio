@@ -1390,12 +1390,14 @@ function MotifsScreen({
                       />
                     </Td>
                     <Td className="text-center">
-                      <Switch
-                        checked={m.requiresTriage}
-                        onCheckedChange={(v) =>
-                          updateMotif(m.id, { requiresTriage: v })
-                        }
-                      />
+                      <HoverTooltip content={TRIAGE_TOOLTIP}>
+                        <Switch
+                          checked={m.requiresTriage}
+                          onCheckedChange={(v) =>
+                            updateMotif(m.id, { requiresTriage: v })
+                          }
+                        />
+                      </HoverTooltip>
                     </Td>
                     <Td className="max-w-[260px]">
                       <button
