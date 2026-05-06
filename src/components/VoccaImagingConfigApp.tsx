@@ -1,4 +1,48 @@
 import { useEffect, useMemo, useState } from "react";
+
+const HoverTooltip = ({
+  children,
+  content,
+  width = "w-96",
+  align = "center",
+}: {
+  children: React.ReactNode;
+  content: React.ReactNode;
+  width?: string;
+  align?: "center" | "left" | "right";
+}) => {
+  const pos =
+    align === "left"
+      ? "left-0"
+      : align === "right"
+        ? "right-0"
+        : "left-1/2 -translate-x-1/2";
+  return (
+    <div className="relative group inline-flex overflow-visible">
+      {children}
+      <div
+        className={`pointer-events-none absolute ${pos} top-full z-[9999] mt-2 hidden rounded-xl bg-slate-900 px-4 py-3 text-left text-xs leading-relaxed text-white shadow-xl group-hover:block ${width}`}
+      >
+        {content}
+      </div>
+    </div>
+  );
+};
+
+const STATUS_TOOLTIP = (
+  <div className="space-y-2">
+    <p><span className="font-semibold">Ouvert :</span> Vocca est autonome pour prendre le rendez-vous sur ce motif.</p>
+    <p><span className="font-semibold">À transférer :</span> lorsque Vocca reconnaît ce motif, elle tente d’abord de transférer l’appel au secrétariat humain. Si le secrétariat n’est pas disponible, Vocca crée une tâche.</p>
+    <p><span className="font-semibold">Création de tâche :</span> dès que ce motif est évoqué par un patient, Vocca crée une tâche pour le secrétariat.</p>
+    <p><span className="font-semibold">Fermé :</span> Vocca ne propose pas ce motif à la prise de rendez-vous.</p>
+  </div>
+);
+
+const TRIAGE_TOOLTIP = (
+  <p>
+    Les questions de triage ne se configurent pas ici. Activez simplement le triage pour ce motif ; le choix précis des questions sera possible à l’étape suivante.
+  </p>
+);
 import { toast } from "sonner";
 import {
   AlertTriangle,
