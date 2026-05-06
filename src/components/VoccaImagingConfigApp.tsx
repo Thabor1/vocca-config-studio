@@ -1270,30 +1270,17 @@ function MotifsScreen({
                   </span>
                 </Th>
                 <Th>
-                  <span
-                    title={
-                      "Ouvert : Vocca est autonome pour prendre les rendez-vous sur ce motif.\n" +
-                      "À transférer : Vocca tente d’abord de transférer l’appel au secrétariat humain. Si indisponible, elle crée une tâche.\n" +
-                      "Création de tâche : Vocca crée une tâche pour le secrétariat dès que le motif est évoqué.\n" +
-                      "Fermé : Vocca ne prend pas de rendez-vous sur ce motif."
-                    }
-                    className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2"
-                  >
-                    Statut
-                    <HelpCircle className="h-3 w-3 opacity-60" />
-                  </span>
+                  <HoverTooltip content={STATUS_TOOLTIP} align="left">
+                    <span className="cursor-help">Statut</span>
+                  </HoverTooltip>
                 </Th>
                 <Th className="w-20">Âge min</Th>
                 <Th className="w-20">Âge max</Th>
                 <Th className="w-24">Prix</Th>
                 <Th className="w-20 text-center">
-                  <span
-                    title="Les questions de triage ne se configurent pas ici. Activez simplement le triage pour ce motif ; les questions précises seront choisies à l’étape suivante."
-                    className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2"
-                  >
-                    Triage
-                    <HelpCircle className="h-3 w-3 opacity-60" />
-                  </span>
+                  <HoverTooltip content={TRIAGE_TOOLTIP}>
+                    <span className="cursor-help">Triage</span>
+                  </HoverTooltip>
                 </Th>
                 <Th>Instructions</Th>
               </tr>
