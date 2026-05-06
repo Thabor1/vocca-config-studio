@@ -961,9 +961,6 @@ function Onboarding({ onNext }: { onNext: () => void }) {
           <Badge className="mb-4 border-white/20 bg-white/15 text-white hover:bg-white/15">
             <Sparkles className="mr-1 h-3 w-3" /> Configuration préremplie par Vocca
           </Badge>
-          <div className="mb-5 inline-flex items-center rounded-2xl bg-white/95 px-4 py-2 shadow-md">
-            <img src="/lovable-uploads/vocca-logo.png" alt="Vocca" className="h-10 w-auto" />
-          </div>
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Votre configuration Vocca est (presque) prête
           </h1>
