@@ -919,9 +919,9 @@ function Onboarding({ onNext }: { onNext: () => void }) {
             Votre configuration Vocca est prête
           </h1>
           <p className="mt-4 text-base text-white/85 sm:text-lg">
-            Nous avons prérempli les motifs du Centre d’imagerie du Centre de
-            l’Arthrose à partir des informations disponibles dans votre EDL. Il
-            ne vous reste qu’à relire, ajuster les exceptions et valider.
+            Nous avons prérempli les motifs du Centre de l’Arthrose à partir
+            des informations disponibles dans votre EDL. Il ne vous reste plus
+            qu’à relire, ajuster et valider.
           </p>
           <Button
             size="lg"
