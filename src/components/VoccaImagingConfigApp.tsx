@@ -1635,9 +1635,11 @@ function MotifDrawer({
 
 function Field({
   label,
+  help,
   children,
 }: {
   label: string;
+  help?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -1646,6 +1648,9 @@ function Field({
         {label}
       </label>
       {children}
+      {help && (
+        <p className="mt-1 text-[11px] text-muted-foreground">{help}</p>
+      )}
     </div>
   );
 }
