@@ -1,4 +1,48 @@
 import { useEffect, useMemo, useState } from "react";
+
+const HoverTooltip = ({
+  children,
+  content,
+  width = "w-96",
+  align = "center",
+}: {
+  children: React.ReactNode;
+  content: React.ReactNode;
+  width?: string;
+  align?: "center" | "left" | "right";
+}) => {
+  const pos =
+    align === "left"
+      ? "left-0"
+      : align === "right"
+        ? "right-0"
+        : "left-1/2 -translate-x-1/2";
+  return (
+    <div className="relative group inline-flex overflow-visible">
+      {children}
+      <div
+        className={`pointer-events-none absolute ${pos} top-full z-[9999] mt-2 hidden rounded-xl bg-slate-900 px-4 py-3 text-left text-xs leading-relaxed text-white shadow-xl group-hover:block ${width}`}
+      >
+        {content}
+      </div>
+    </div>
+  );
+};
+
+const STATUS_TOOLTIP = (
+  <div className="space-y-2">
+    <p><span className="font-semibold">Ouvert :</span> Vocca est autonome pour prendre le rendez-vous sur ce motif.</p>
+    <p><span className="font-semibold">À transférer :</span> lorsque Vocca reconnaît ce motif, elle tente d’abord de transférer l’appel au secrétariat humain. Si le secrétariat n’est pas disponible, Vocca crée une tâche.</p>
+    <p><span className="font-semibold">Création de tâche :</span> dès que ce motif est évoqué par un patient, Vocca crée une tâche pour le secrétariat.</p>
+    <p><span className="font-semibold">Fermé :</span> Vocca ne propose pas ce motif à la prise de rendez-vous.</p>
+  </div>
+);
+
+const TRIAGE_TOOLTIP = (
+  <p>
+    Les questions de triage ne se configurent pas ici. Activez simplement le triage pour ce motif ; le choix précis des questions sera possible à l’étape suivante.
+  </p>
+);
 import { toast } from "sonner";
 import {
   AlertTriangle,
@@ -1226,30 +1270,17 @@ function MotifsScreen({
                   </span>
                 </Th>
                 <Th>
-                  <span
-                    title={
-                      "Ouvert : Vocca est autonome pour prendre les rendez-vous sur ce motif.\n" +
-                      "À transférer : Vocca tente d’abord de transférer l’appel au secrétariat humain. Si indisponible, elle crée une tâche.\n" +
-                      "Création de tâche : Vocca crée une tâche pour le secrétariat dès que le motif est évoqué.\n" +
-                      "Fermé : Vocca ne prend pas de rendez-vous sur ce motif."
-                    }
-                    className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2"
-                  >
-                    Statut
-                    <HelpCircle className="h-3 w-3 opacity-60" />
-                  </span>
+                  <HoverTooltip content={STATUS_TOOLTIP} align="left">
+                    <span className="cursor-help">Statut</span>
+                  </HoverTooltip>
                 </Th>
                 <Th className="w-20">Âge min</Th>
                 <Th className="w-20">Âge max</Th>
                 <Th className="w-24">Prix</Th>
                 <Th className="w-20 text-center">
-                  <span
-                    title="Les questions de triage ne se configurent pas ici. Activez simplement le triage pour ce motif ; les questions précises seront choisies à l’étape suivante."
-                    className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2"
-                  >
-                    Triage
-                    <HelpCircle className="h-3 w-3 opacity-60" />
-                  </span>
+                  <HoverTooltip content={TRIAGE_TOOLTIP}>
+                    <span className="cursor-help">Triage</span>
+                  </HoverTooltip>
                 </Th>
                 <Th>Instructions</Th>
               </tr>
@@ -1296,27 +1327,29 @@ function MotifsScreen({
                       />
                     </Td>
                     <Td>
-                      <Select
-                        value={m.status}
-                        onValueChange={(v) =>
-                          updateMotif(m.id, { status: v as MotifStatus })
-                        }
-                      >
-                        <SelectTrigger
-                          className={cn(
-                            "h-8 w-[140px] border",
-                            STATUS_META[m.status].className,
-                          )}
+                      <HoverTooltip content={STATUS_TOOLTIP} align="left">
+                        <Select
+                          value={m.status}
+                          onValueChange={(v) =>
+                            updateMotif(m.id, { status: v as MotifStatus })
+                          }
                         >
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="open">Ouvert</SelectItem>
-                          <SelectItem value="closed">Fermé</SelectItem>
-                          <SelectItem value="transfer">À transférer</SelectItem>
-                          <SelectItem value="task">Création de tâche</SelectItem>
-                        </SelectContent>
-                      </Select>
+                          <SelectTrigger
+                            className={cn(
+                              "h-8 w-[140px] border",
+                              STATUS_META[m.status].className,
+                            )}
+                          >
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="open">Ouvert</SelectItem>
+                            <SelectItem value="closed">Fermé</SelectItem>
+                            <SelectItem value="transfer">À transférer</SelectItem>
+                            <SelectItem value="task">Création de tâche</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </HoverTooltip>
                     </Td>
                     <Td>
                       <Input
@@ -1357,12 +1390,14 @@ function MotifsScreen({
                       />
                     </Td>
                     <Td className="text-center">
-                      <Switch
-                        checked={m.requiresTriage}
-                        onCheckedChange={(v) =>
-                          updateMotif(m.id, { requiresTriage: v })
-                        }
-                      />
+                      <HoverTooltip content={TRIAGE_TOOLTIP}>
+                        <Switch
+                          checked={m.requiresTriage}
+                          onCheckedChange={(v) =>
+                            updateMotif(m.id, { requiresTriage: v })
+                          }
+                        />
+                      </HoverTooltip>
                     </Td>
                     <Td className="max-w-[260px]">
                       <button
