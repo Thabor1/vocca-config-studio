@@ -40,7 +40,7 @@ const STATUS_TOOLTIP = (
 
 const TRIAGE_TOOLTIP = (
   <p>
-    Les questions de triage ne se configurent pas ici. Activez simplement le triage pour ce motif ; le choix précis des questions sera possible à l’étape suivante.
+    Les questions de triage ne se configurent pas ici. Activez simplement les questions de triage pour ce motif ; le choix précis des questions sera possible à l’étape suivante.
   </p>
 );
 import { toast } from "sonner";
@@ -149,7 +149,7 @@ const CONFIG_DATA = {
   siteOpeningHours:
     "Du lundi au vendredi : 7h45 – 20h00 · Samedi : 8h00 – 16h00",
   webhookUrl: "{{webhookUrl}}",
-  calendlyUrl: "{{calendlyUrl}}",
+  calendlyUrl: "https://app.lemcal.com/@nathanelalouf/30-minutes",
   examsDetected: [
     "Échographie",
     "Infiltration",
@@ -1024,7 +1024,7 @@ function Onboarding({ onNext }: { onNext: () => void }) {
             ))}
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            Importés depuis votre EDL Enovacom et votre logiciel de prise de
+            Importés depuis votre agenda et votre logiciel de prise de
             rendez-vous.
           </p>
         </Card>
@@ -1034,7 +1034,7 @@ function Onboarding({ onNext }: { onNext: () => void }) {
         <EduCard
           icon={ListChecks}
           title="Motifs préremplis"
-          text="Les libellés patients, les statuts et les instructions ont été repris puis nettoyés depuis votre EDL."
+          text="Les libellés patients, les statuts et les instructions ont été repris puis nettoyés depuis votre agenda."
         />
         <EduCard
           icon={CheckCircle2}
@@ -1171,7 +1171,7 @@ function MotifsScreen({
         <Kpi label="Total motifs" value={counts.total} tone="indigo" />
         <Kpi label="Ouverts" value={counts.open} tone="emerald" />
         <Kpi label="À transférer" value={counts.transfer} tone="orange" />
-        <Kpi label="Sans nom oral patient" value={counts.noLabel} tone="amber" />
+        <Kpi label="Retranscriptions manquantes" value={counts.noLabel} tone="amber" />
         <Kpi label="Prix renseignés" value={counts.priced} tone="violet" />
       </div>
 
@@ -1182,11 +1182,11 @@ function MotifsScreen({
               {counts.withLabel} / {counts.total}
             </span>{" "}
             <span className="text-muted-foreground">
-              motifs disposent déjà d’un nom oral patient
+              motifs disposent déjà d’une retranscription à l’oral
             </span>
           </div>
           <div className="text-xs text-muted-foreground">
-            Préremplissage automatique depuis l’EDL
+            Préremplissage automatique depuis votre agenda
           </div>
         </div>
         <Progress
@@ -1198,7 +1198,7 @@ function MotifsScreen({
       <div className="flex items-start gap-3 rounded-2xl border border-violet-200/70 bg-violet-50/70 p-4 text-sm text-violet-900 dark:border-violet-900/60 dark:bg-violet-950/30 dark:text-violet-200">
         <Sparkles className="mt-0.5 h-5 w-5 shrink-0" />
         <p>
-          Les motifs ci-dessous ont été préremplis depuis votre EDL. Les
+          Les motifs ci-dessous ont été préremplis depuis votre agenda EDL. Les
           consignes ont été reformulées pour être communiquées clairement au
           patient à l’oral.
         </p>
@@ -1238,7 +1238,7 @@ function MotifsScreen({
           <FilterChip
             active={filter === "noLabel"}
             onClick={() => setFilter("noLabel")}
-            label="Sans nom oral patient"
+            label="Retranscriptions manquantes"
             count={counts.noLabel}
           />
           <FilterChip
@@ -1259,11 +1259,10 @@ function MotifsScreen({
                 <Th>Libellé importé</Th>
                 <Th>
                   <span
-                    title="C’est le libellé simple que Vocca utilisera à l’oral pour confirmer le motif avec le patient. Ex. : « Échographie abdominale »."
+                    title="C’est la formulation simple que Vocca utilisera à l’oral pour confirmer le motif avec le patient."
                     className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2"
                   >
-                    Nom entendu par le patient
-                    <HelpCircle className="h-3 w-3 opacity-60" />
+                    Retranscription à l’oral du motif
                   </span>
                 </Th>
                 <Th>
@@ -1274,9 +1273,9 @@ function MotifsScreen({
                 <Th className="w-20">Âge min</Th>
                 <Th className="w-20">Âge max</Th>
                 <Th className="w-24">Prix</Th>
-                <Th className="w-20 text-center">
+                <Th className="w-28 text-center">
                   <HoverTooltip content={TRIAGE_TOOLTIP}>
-                    <span className="cursor-help">Triage</span>
+                    <span className="cursor-help">Questions de triage</span>
                   </HoverTooltip>
                 </Th>
                 <Th>Instructions</Th>
@@ -1307,7 +1306,7 @@ function MotifsScreen({
                       {missing && (
                         <div className="mb-1 flex items-center gap-1 text-[11px] font-medium text-amber-700 dark:text-amber-400">
                           <AlertTriangle className="h-3 w-3" />
-                          Nom oral patient manquant
+                          Retranscription manquante
                         </div>
                       )}
                       <Input
@@ -1316,7 +1315,7 @@ function MotifsScreen({
                           updateMotif(m.id, { patientLabel: e.target.value })
                         }
                         placeholder="Ex. : Échographie abdominale"
-                        title="C’est le libellé simple que Vocca utilisera à l’oral pour confirmer le motif avec le patient."
+                        title="C’est la formulation simple que Vocca utilisera à l’oral pour confirmer le motif avec le patient."
                         className={cn(
                           "h-8 min-w-[180px]",
                           missing && "border-amber-300 bg-white",
@@ -1646,7 +1645,7 @@ function MotifDrawer({
                   />
                 </Field>
               </div>
-              <Field label="Triage requis">
+              <Field label="Activer les questions de triage">
                 <div className="flex items-center gap-3 rounded-md border border-border/60 px-3 py-2">
                   <Switch
                     checked={motif.requiresTriage}
