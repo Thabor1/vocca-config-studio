@@ -966,7 +966,7 @@ function Onboarding({ onNext }: { onNext: () => void }) {
           </h1>
           <p className="mt-4 text-base text-white/85 sm:text-lg">
             Nous avons prérempli les motifs du Centre de l’Arthrose à partir
-            des informations disponibles dans votre EDL. Il ne vous reste plus
+            des informations disponibles dans votre agenda. Il ne vous reste plus
             qu’à relire, ajuster et valider.
           </p>
           <Button
